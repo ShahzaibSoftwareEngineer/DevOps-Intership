@@ -1,0 +1,21 @@
+#!/bin/bash
+
+Url="https://google.com"
+Expected_status=200
+
+http_status=$(curl -L -o /dev/null -s -w "%{http_code}\n" "$Url")
+
+if [[ -z "$http_status" ]]; then
+    echo "Error: No response received from $Url"
+    exit 1
+fi
+
+echo "Checking health of: $Url"
+echo "Received HTTP Status: $http_status"
+
+if [ "$http_status" -eq "$Expected_status" ]; then
+    echo "Success! $Url is online (Status $http_status)."
+else
+    echo "ALERT! $Url is unreachable or unhealthy (Status $http_status)."
+fi
+
